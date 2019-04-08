@@ -75,7 +75,7 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 
 	sudo chown -R ethan:www-data {{$var_www_APP_NAME}}
 
-	mkdir -p {{$var_www_APP_NAME}}/storage/framework
+	mkdir -p {{$var_www_APP_NAME}}/storage/framework/cache/data
 
 	cd {{$var_www_APP_NAME}}/storage/framework
 	mkdir -p sessions

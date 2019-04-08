@@ -19,6 +19,9 @@ Route::get('/', function () {
 });
 
 Route::get('insta-callback', function(Request $request){
-    dd($request->all());
+    $client = new \GuzzleHttp\Client();
+
+    dd($client->request('GET', 'https://api.instagram.com/oauth/access_token'));
+//    return redirect()
 });
 
