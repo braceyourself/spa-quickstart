@@ -26,11 +26,13 @@ Route::get('insta-callback', function(Request $request){
     $code = $request->code;
 
     $response = $client->post("https://api.instagram.com/oauth/access_token",[
-        'client_id' => $client_id,
-        'client_secret' => $client_secret,
-        'grant_type' => 'authorization_code',
-        'redirect_uri' => $redirect,
-        'code' => $code
+        'form_params' => [
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+            'grant_type' => 'authorization_code',
+            'redirect_uri' => $redirect,
+            'code' => $code
+        ]
     ]);
 
     dump($response);
