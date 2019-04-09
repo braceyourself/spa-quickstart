@@ -305,8 +305,6 @@ sudo service {{$php_version}}-fpm reload;
 
 	php artisan key:generate --force
 
-	php artisan config:clear
-	php artisan config:cache
 	php artisan clear-compiled --env=production;
 	php artisan cache:clear
 @endtask
