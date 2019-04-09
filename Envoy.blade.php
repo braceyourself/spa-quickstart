@@ -300,7 +300,7 @@ sudo service {{$php_version}}-fpm reload;
 	cd {{ $var_www_APP_NAME_app }}
 
 	if [ ! -e {{$ENV_FILE}} ];then
-	cp {{$ENV_EXAMPLE}} {{$ENV_FILE}}
+		cp {{$ENV_EXAMPLE}} {{$ENV_FILE}}
 	fi
 
 	php artisan key:generate --force

@@ -33,7 +33,7 @@ Route::get('insta-callback', function (Request $request) {
         ];
         dump($form_params);
 
-        $response = $client->post($uri, $form_params);
+        $response = $client->post($uri, compact('form_params'));
 
         dd($response);
 
