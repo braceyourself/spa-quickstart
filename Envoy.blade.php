@@ -31,9 +31,13 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 @macro('push', ['on' => 'as1'])
 	identify
     pull
-	run_composer
-	clear_cache
-	migrate
+	create_folders
+	update_symlinks_current
+	composer
+	update_permissions_current
+	clear_cache_current_release
+	migrate_current
+	
 @endmacro
 
 
@@ -61,6 +65,7 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 
 @task('pull')
 	cd {{$var_www_APP_NAME_app}};
+	git reset --hard
 	git pull;
 @endtask
 
@@ -100,6 +105,19 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 
 
 
+@task('update_permissions_current')
+	echo "TASK: update_permissions_current"
+
+	echo "cd {{ $var_www_APP_NAME }}"
+	cd {{ $var_www_APP_NAME }};
+
+	echo "sudo chmod -R 775 'app'"
+	sudo chmod -R 775 "app";
+
+	echo "sudo chgrp -R www-data 'app'"
+	sudo chgrp -R www-data "app";
+
+@endtask
 
 @task('update_permissions')
 	echo "TASK: update_permissions"
@@ -150,6 +168,15 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 	composer dump-autoload -o
 @endtask
 
+@task('composer')
+	echo "task: run_composer"
+
+	cd {{ $var_www_APP_NAME_app }}
+	composer install --prefer-dist --no-scripts --no-dev;
+	php artisan clear-compiled --env=production;
+	composer dump-autoload -o
+@endtask
+
 
 @task('migrate')
 	echo "task: migrate"
@@ -158,6 +185,12 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 	php artisan migrate --force;
 @endtask
 
+@task('migrate_current')
+	echo "task: migrate_current"
+
+	cd {{ $var_www_APP_NAME_app }}
+	php artisan migrate --force;
+@endtask
 
 
 
@@ -169,36 +202,81 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 	npm run prod
 @endtask
 
-
 @task('update_symlinks')
 
-	echo "task: update_symlinks"
+echo "task: update_symlinks"
+
+cd {{ $var_www_APP_NAME }};
+
+
+
+# link .env
+ln -nfs {{ $var_www_APP_NAME }}/.env {{ $var_www_releases_APP_NAME }}/{{$release}}/.env;
+
+
+# link storage
+rm -r {{ $var_www_releases_APP_NAME }}/"{{ $release }}"/storage;
+mkdir -p {{ $var_www_APP_NAME }}/storage
+ln -nfs {{ $var_www_APP_NAME }}/storage {{ $var_www_releases_APP_NAME }}/{{$release}}/storage;
+
+
+
+# link vendor
+#rm -r {{ $var_www_releases_APP_NAME }}/"{{ $release }}"/vendor;
+mkdir -p {{ $var_www_APP_NAME }}/vendor
+
+echo "{{ $var_www_APP_NAME }}/vendor <===> {{ $var_www_releases_APP_NAME }}/{{$release}}/vendor";
+ln -nfs "{{ $var_www_APP_NAME }}/vendor" "{{ $var_www_releases_APP_NAME }}/{{$release}}/vendor";
+
+
+# set permissions
+cd {{ $var_www_releases_APP_NAME }}/{{$release}};
+sudo chgrp -h www-data .env;
+sudo chgrp -h www-data storage;
+sudo chgrp -hR www-data {{ $var_www_APP_NAME }};
+sudo chmod -R 775 {{ $var_www_APP_NAME }}/storage;
+
+
+# make sure public storage is linked
+mkdir -p {{ $var_www_APP_NAME }}/storage/app
+echo "{{ $var_www_APP_NAME }}/storage/app/public <===> {{ $var_www_releases_APP_NAME }}/{{$release}}/public/storage";
+ln -s {{ $var_www_APP_NAME }}/storage/app/public {{ $var_www_releases_APP_NAME }}/{{$release}}/public/storage
+
+
+# reload the service
+sudo service {{$php_version}}-fpm reload;
+
+
+@endtask
+
+@task('update_symlinks_current')
+
+	echo "task: update_symlinks_current"
 
 	cd {{ $var_www_APP_NAME }};
 
 
 
 	# link .env
-	ln -nfs {{ $var_www_APP_NAME }}/.env {{ $var_www_releases_APP_NAME }}/{{$release}}/.env;
+	ln -nfs {{ $var_www_APP_NAME }}/.env {{ $var_www_APP_NAME_app }}/.env;
 
 
 	# link storage
-	rm -r {{ $var_www_releases_APP_NAME }}/"{{ $release }}"/storage;
+	rm -r {{ $var_www_APP_NAME_app }}/storage;
 	mkdir -p {{ $var_www_APP_NAME }}/storage
-	ln -nfs {{ $var_www_APP_NAME }}/storage {{ $var_www_releases_APP_NAME }}/{{$release}}/storage;
+	ln -nfs {{ $var_www_APP_NAME }}/storage {{ $var_www_APP_NAME_app }}/storage;
 
 
 
 	# link vendor
-	#rm -r {{ $var_www_releases_APP_NAME }}/"{{ $release }}"/vendor;
 	mkdir -p {{ $var_www_APP_NAME }}/vendor
 
-	echo "{{ $var_www_APP_NAME }}/vendor <===> {{ $var_www_releases_APP_NAME }}/{{$release}}/vendor";
-	ln -nfs "{{ $var_www_APP_NAME }}/vendor" "{{ $var_www_releases_APP_NAME }}/{{$release}}/vendor";
+	echo "{{ $var_www_APP_NAME }}/vendor <===> {{ $var_www_APP_NAME_app }}/vendor";
+	ln -nfs "{{ $var_www_APP_NAME }}/vendor" "{{ $var_www_APP_NAME_app }}/vendor";
 
 
 	# set permissions
-	cd {{ $var_www_releases_APP_NAME }}/{{$release}};
+	cd {{ $var_www_APP_NAME_app }};
 	sudo chgrp -h www-data .env;
 	sudo chgrp -h www-data storage;
 	sudo chgrp -hR www-data {{ $var_www_APP_NAME }};
@@ -207,14 +285,30 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 
 	# make sure public storage is linked
 	mkdir -p {{ $var_www_APP_NAME }}/storage/app
-	echo "{{ $var_www_APP_NAME }}/storage/app/public <===> {{ $var_www_releases_APP_NAME }}/{{$release}}/public/storage";
-    ln -s {{ $var_www_APP_NAME }}/storage/app/public {{ $var_www_releases_APP_NAME }}/{{$release}}/public/storage
+	echo "{{ $var_www_APP_NAME }}/storage/app/public <===> {{ $var_www_APP_NAME_app }}/public/storage";
+    ln -fs {{ $var_www_APP_NAME }}/storage/app/public {{ $var_www_APP_NAME_app }}/public/storage
 
 
 	# reload the service
 	sudo service {{$php_version}}-fpm reload;
 
 
+@endtask
+
+@task('clear_cache_current_release')
+	echo "task: clear_cache_current_release"
+	cd {{ $var_www_APP_NAME_app }}
+
+	if [ ! -e {{$ENV_FILE}} ];then
+	cp {{$ENV_EXAMPLE}} {{$ENV_FILE}}
+	fi
+
+	php artisan key:generate --force
+
+	php artisan config:clear
+	php artisan cache:clear
+	php artisan config:cache
+	php artisan clear-compiled --env=production;
 @endtask
 
 @task('clear_cache')
@@ -252,15 +346,6 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 
 
 
-@task('push', ['on' => 'localhost'])
-echo "task: commit"
-
-git add .
-prompt "enter a commit message" commit_message
-git commit -m '$commit_message'
-git push
-
-@endtask
 
 
 
