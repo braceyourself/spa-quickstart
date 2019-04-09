@@ -20,8 +20,8 @@ Route::get('/', function () {
 
 Route::get('insta-callback', function(Request $request){
     $client = new \GuzzleHttp\Client();
-    $client_id = 'c49c60f5de314bfc92abd2d128d469e1';
-    $client_secret = '43e24660e0c740b5a2ef61a79ea275f4 ';
+    $client_id = env('INSTAGRAM_ID');
+    $client_secret = env('INSTAGRAM_SECRET');
     $redirect = '/inst/authenticated';
     $code = $request->code;
 
