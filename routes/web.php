@@ -23,13 +23,11 @@ Route::get('insta-callback', function (Request $request) {
     if ($request->code) {
 
         $client = new \GuzzleHttp\Client();
-        $client_id = env('INSTAGRAM_ID');
-        $client_secret = env('INSTAGRAM_SECRET');
         $redirect = 'http://api.braceyourself.solutions/insta-callback';
         $code = $request->code;
         $params = [
-            'client_id' => $client_id,
-            'client_secret' => $client_secret,
+            'client_id' => env('INSTAGRAM_ID'),
+            'client_secret' => env('INSTAGRAM_SECRET'),
             'grant_type' => 'authorization_code',
             'redirect_uri' => $redirect,
             'code' => $code
