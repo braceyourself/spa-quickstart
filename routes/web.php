@@ -31,11 +31,9 @@ Route::get('insta-callback', function (Request $request) {
             'redirect_uri' => 'http://api.braceyourself.solutions/insta-callback',
             'code' => $request->code
         ];
-        dump($form_params);
 
         $response = $client->post($uri, compact('form_params'));
 
-        dd($response);
 
     } else
         dd($request->all());
