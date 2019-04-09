@@ -25,7 +25,7 @@ Route::get('insta-callback', function (Request $request) {
         $client = new \GuzzleHttp\Client();
         $redirect = 'http://api.braceyourself.solutions/insta-callback';
         $code = $request->code;
-        $params = [
+        $form_params = [
             'client_id' => env('INSTAGRAM_ID'),
             'client_secret' => env('INSTAGRAM_SECRET'),
             'grant_type' => 'authorization_code',
@@ -33,7 +33,7 @@ Route::get('insta-callback', function (Request $request) {
             'code' => $code
         ];
 
-        $response = $client->post("https://api.instagram.com/oauth/access_token", $params);
+        $response = $client->post("https://api.instagram.com/oauth/access_token", compact('form_params'));
 
         dd($response);
 
