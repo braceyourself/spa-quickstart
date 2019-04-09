@@ -28,6 +28,13 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 @endmacro
 
 
+@macro('push', ['on' => 'as1'])
+	identify
+    pull
+	run_composer
+	clear_cache
+	migrate
+@endmacro
 
 
 @macro('deploy', ['on' => 'as1'])
@@ -52,6 +59,10 @@ $ENV_EXAMPLE = "$var_www_releases_APP_NAME/$release/.env.example";
 	echo "logged into $(hostname) as $(whoami)"
 @endtask
 
+@task('pull')
+	cd {{$var_www_APP_NAME_app}};
+	git pull;
+@endtask
 
 @task('fetch_repo')
 	echo "TASK: fetch_repo"
