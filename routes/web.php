@@ -30,7 +30,6 @@ Route::get('insta-callback', function (Request $request) {
         'redirect_uri' => env('INSTAGRAM_CALLBACK'),
         'code' => $request->code
     ];
-    dd($form_params);
 
     $response = $client->post($uri, compact('form_params'));
     dd($response->all());
