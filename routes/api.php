@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('insta', function(){
     $root = 'https://api/instagram.com/v1';
-    $redirect_url = 'http://api.braceyourself.solutions/insta-callback';
+    $redirect_url = env('INSTAGRAM_CALLBACK');
 
     $client = new \GuzzleHttp\Client();
     $client_id = 'c49c60f5de314bfc92abd2d128d469e1';
