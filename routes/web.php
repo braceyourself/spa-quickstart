@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('php', function(){
+    dd(phpinfo());
+});
+Route::get('test_api_call','ApiController@call_vendor_api');

@@ -13,6 +13,22 @@ use Illuminate\Http\Request;
 |
 */
 
+/**
+ * @group Users
+ *
+ * Get your user or all the users or a single user.
+ * should be authenticated
+ */
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('apis', 'ApiController');
+
+Route::get('frc', function(){
+    return response([
+        'message' => 'hello world!'
+    ]);
+});
+
+
