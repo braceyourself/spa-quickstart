@@ -1,0 +1,10 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Internal\DummyClass as BaseModel;
+
+class DummyClass extends BaseModel
+{
+    protected $connection =  'oracle-frc';
+}

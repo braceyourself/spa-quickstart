@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\VendorData;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,16 +19,14 @@ class ApiController extends Controller
             'auth' => [$client_id, $key]
         ];
         $base_url = 'https://api.cornerstone.cc/api/v1';
-        $url = $base_url . '/transactions?show_test=true';
+        $url = $base_url . '/transactions?show_test=true&include_gid=true';
         $client = new Client();
-        $req = new \GuzzleHttp\Psr7\Request('GET', $base_url . '/transactions?show_test=true');
         $response = $client->get($url, $options);
-        dd(json_decode($response->getBody()->getContents()));
 
-        $promise = $client->sendAsync($req,$options)->then(function ($response) {
-            dd(json_decode($response->getBody()->getContents()));
-        });
-//        $promise->wait();
+        $existing_transactions = VendorData::first();
+        dd($existing_transactions);
+
+        dd(json_decode($response->getBody()->getContents()));
 
 
     }
