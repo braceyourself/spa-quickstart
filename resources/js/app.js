@@ -1,32 +1,42 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
+import Vue from 'vue';
+import router from './router';
+import store from './store';
+import toastr from './toastr';
+import Logger from './Logger';
 
-window.Vue = require('vue');
+let l = new Logger('app.js');
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+window.Vue = Vue;
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+window.flash = (message, type = 'info', options) => {
+    toastr[type](message);
+};
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// eslint-disable-next-line
+const files = require.context('./', true, /\.vue$/i);
+files.keys().map(key => {
+    let name = key.split('/').pop().split('.')[0];
+    Vue.component(name, files(key).default)
+});
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+Vue.mixin({
+    methods: {
+        get(key) {
+            return this.$store.getters.get(key);
+        },
+
+    },
+});
 
 const app = new Vue({
     el: '#app',
+    router, store,
+    components: {
+        App: require("./layouts/App").default
+    },
+    created() {
+        this.$store.commit('resource', {resource: 'users', data: []});
+        this.$store.dispatch('load', 'users');
+    }
 });

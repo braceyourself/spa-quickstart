@@ -21,3 +21,4 @@ Route::resource('api-calls', 'ApiCallController');
 //Route::get('vendor')
 
 
+Route::resource('users', 'UserController');

@@ -2,33 +2,85 @@
 
 namespace App\Http\Controllers;
 
-use App\VendorData;
-use GuzzleHttp\Client;
+use App\Api;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
+use Illuminate\Http\Response;
 
 class ApiController extends Controller
 {
-    public function call_vendor_api(Request $request)
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Api[]|Collection
+	 */
+    public function index()
     {
-//        dd($request->all());
-        $client_id = 'test_3kdyN4LepSQxKYFx2uYa';
-        $key = 'test_PR5OMgJ498wNRGrv4tLgwFHub';
-        $options = [
-            'auth' => [$client_id, $key]
-        ];
-        $base_url = 'https://api.cornerstone.cc/api/v1';
-        $url = $base_url . '/transactions?show_test=true&include_gid=true';
-        $client = new Client();
-        $response = $client->get($url, $options);
-
-        $existing_transactions = VendorData::first();
-        dd($existing_transactions);
-
-        dd(json_decode($response->getBody()->getContents()));
-
-
+        return Api::all();
     }
 
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return Response
+     */
+	public function store(Request $request)
+	{
+		$request->validate([
+			'name' => 'required|string',
+			'base_url' => 'required|string|url',
+			'bearer' => 'string',
+			'client_id' => 'string',
+			'client_secred' => 'string',
+		]);
+
+		return Api::create($request->all());
+	}
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Api $api
+     * @return Api
+     */
+    public function show(Api $api)
+    {
+		return $api;
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Api $api
+     * @return Response
+     */
+    public function edit(Api $api)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Api $api
+     * @return Response
+     */
+    public function update(Request $request, Api $api)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Api $api
+     * @return Response
+     */
+    public function destroy(Api $api)
+    {
+        //
+    }
 }

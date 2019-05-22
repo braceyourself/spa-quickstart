@@ -5,54 +5,29 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import "~toastr/toastr";
 
-html, body {
-    background-color: #fff;
-    color: #636b6f;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 200;
-    height: 100vh;
-    margin: 0;
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-.full-height {
-    height: 100vh;
+.pointer {
+  cursor: pointer;
 }
 
-.flex-center {
-    align-items: center;
-    display: flex;
-    justify-content: center;
+.form-group.row {
+  label {
+    width: 100%;
+  }
 }
 
-.position-ref {
-    position: relative;
+.router-link-active {
+
 }
 
-.top-right {
-    position: absolute;
-    right: 10px;
-    top: 18px;
+.router-link-exact-active {
+  //background-color: #8fcbff;
+  //cursor: default;
 }
 
-.content {
-    text-align: center;
-}
-
-.title {
-    font-size: 84px;
-}
-
-.links > a {
-    color: #636b6f;
-    padding: 0 25px;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: .1rem;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-.m-b-md {
-    margin-bottom: 30px;
-}
