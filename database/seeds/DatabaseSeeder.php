@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
+
     /**
      * Seed the application's database.
      *
@@ -16,16 +17,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $tables = [
-            'apis',
-            'api_calls',
-            'api_auth_types',
-            'vendors',
-        ];
-        foreach ($tables as $table) {
-            DB::table($table)->truncate();
-        }
+        $this->truncateTables();
 
+
+        \App\User::create([
+            'name'=>'Ethan Brace',
+            'email'=> 'eab@frc.org',
+            'password' => bcrypt(env('MY_PASSWORD'))
+        ]);
 
         ApiAuthType::create([
             'type' => 'basic'
@@ -42,5 +41,20 @@ class DatabaseSeeder extends Seeder
         ]));
 
         $api->addEndpoint('/transactions');
+    }
+
+    private function truncateTables()
+    {
+        $tables = [
+            'apis',
+            'users',
+            'api_calls',
+            'api_endpoints',
+            'api_auth_types',
+            'vendors',
+        ];
+        foreach ($tables as $table) {
+            DB::table($table)->truncate();
+        }
     }
 }
