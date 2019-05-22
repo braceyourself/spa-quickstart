@@ -17,7 +17,10 @@ class CreateApiEndpointsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('api_id');
             $table->string('path');
+            $table->enum('method',['GET','POST']);
             $table->string('store_in_table')->nullable();
+
+            $table->unique(['api_id','path']);
 
             $table->timestamps();
         });

@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApiTests extends TestCase
 {
-    use DatabaseTransactions;
+//    use DatabaseTransactions;
 
     /**
      * @test
@@ -24,17 +24,18 @@ class ApiTests extends TestCase
     {
 
         /** @var Api $api */
-        $api = Vendor::create([
+        $api = Vendor::firstOrCreate([
             'name' =>'test-vendor'
-        ])->apis()->save(new Api([
+        ])->apis()->save(Api::firstOrCreate([
             'base_url' => 'google.com',
-            'auth_type_id' => ApiAuthType::create(['type'=>'basic'])->id
+            'auth_type_id' => ApiAuthType::firstOrCreate(['type'=>'basic'])->id
         ]));
 
         $api_call = $api->call();
+//        dd($api->calls()->get());
 
 //        dd($api_call);
 
-        $this->assertTrue($api_call->exists);
+        $this->assertTrue(optional($api_call)->exists);
     }
 }

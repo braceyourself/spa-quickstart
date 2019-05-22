@@ -20,6 +20,8 @@ class CreateApisTable extends Migration
             $table->string('client_secret')->nullable();
             $table->string('base_url');
             $table->integer('auth_type_id');
+
+            $table->unique(['vendor_id','base_url']);
             $table->timestamps();
         });
     }

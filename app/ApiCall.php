@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Api api
  * @property string method
  * @property string path
+ * @property ApiEndpoint api_endpoint
  */
 class ApiCall extends Model
 {
@@ -17,9 +18,16 @@ class ApiCall extends Model
     ];
 
 
+
     protected $dispatchesEvents = [
         'created',
     ];
+
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
 
     /**********************************************
      * Relations
@@ -27,11 +35,6 @@ class ApiCall extends Model
     public function api_endpoint()
     {
         return $this->belongsTo(ApiEndpoint::class);
-    }
-
-    public function api()
-    {
-        return $this->hasOneThrough(Api::class, ApiEndpoint::class);
     }
 
     /**********************************************
@@ -55,6 +58,17 @@ class ApiCall extends Model
         }
 
         return array_merge($opts, $options);
+    }
+
+    /**********************************************
+     * Attributes
+     **********************************************/
+    public function getApiAttribute(){
+        return $this->api_endpoint->api;
+    }
+
+    public function getMethodAttribute(){
+        return $this->api_endpoint->method;
     }
 
 }

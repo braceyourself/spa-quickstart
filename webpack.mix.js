@@ -14,5 +14,6 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .browserSync({
-        proxy:'api.frc.org.test:8080'
+        proxy:'localhost:8000',
+        port:3001
     });

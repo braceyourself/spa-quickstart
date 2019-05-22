@@ -3,12 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * @property ApiAuthType auth_type
  * @property string base_url
  * @property string client_id
  * @property string client_secret
+ * @property Collection endpoints
  */
 class Api extends Model
 {
@@ -46,11 +48,20 @@ class Api extends Model
 
     /**********************************************
      * Methods
-     **********************************************/
-    public function call(ApiEndpoint $endpoint, $method = 'get')
+     *********************************************/
+
+    /**
+     * @param string $path
+     * @param string $method
+     */
+    public function call($path = '/', $method = 'get')
     {
-        $endpoint->calls()->save(new ApiCall([
-            'api_endpoint_id' => $endpoint->id,
+        $endpoint = $this->endpoints->where('path', $path)->first();
+        if(!$endpoint){
+            $endpoint = $this->addEndpoint($path);
+        }
+
+        return $endpoint->api_calls()->save(new ApiCall([
             'method' => $method
         ]));
 
@@ -58,14 +69,15 @@ class Api extends Model
 
     public function get($path)
     {
-        $endpont = ApiEndpoint::where('path', $path)->first();
-        return $this->call($endpont);
+        $endpoint = ApiEndpoint::where('path', $path)->first();
+        return $this->call($endpoint);
     }
 
-    public function addEndpoint($path, $storeInTable = null)
+    public function addEndpoint($path, $method = 'GET', $storeInTable = null)
     {
-        $this->endpoints()->save(new ApiEndpoint([
+        return $this->endpoints()->save(new ApiEndpoint([
             'path' => $path,
+            'method' => $method,
             'store_in_table' => $storeInTable
         ]));
     }

@@ -16,7 +16,6 @@ class CreateApiCallsTable extends Migration
         Schema::create('api_calls', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('api_endpoint_id');
-            $table->string('method');
             $table->boolean('finished')->default(false);
             $table->string('response')->nullable();
             $table->timestamps();

@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string path
+ * @property Collection $api_calls
  */
 class ApiEndpoint extends Model
 {
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
+
+    protected $fillable = ['path','store_in_table'];
+
 
     /**********************************************
      * Relations
@@ -22,7 +22,15 @@ class ApiEndpoint extends Model
         return $this->belongsTo(Api::class);
     }
 
-    public function calls(){
-        $this->hasMany(ApiCall::class);
+    public function api_calls(){
+        return $this->hasMany(ApiCall::class);
+    }
+
+
+    /**********************************************
+     * Methods
+     **********************************************/
+    public function call(){
+        return $this->api_calls()->save(new ApiCall());
     }
 }
