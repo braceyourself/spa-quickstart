@@ -24,10 +24,6 @@ class ApiCall extends Model
     ];
 
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
 
     /**********************************************
      * Relations
@@ -69,6 +65,10 @@ class ApiCall extends Model
 
     public function getMethodAttribute(){
         return $this->api_endpoint->method;
+    }
+
+    public function getPathAttribute(){
+        return $this->api_endpoint->path;
     }
 
 }

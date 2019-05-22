@@ -22,3 +22,4 @@ Route::resource('api-calls', 'ApiCallController');
 
 
 Route::resource('users', 'UserController');
+Route::resource('apis', 'ApiController');

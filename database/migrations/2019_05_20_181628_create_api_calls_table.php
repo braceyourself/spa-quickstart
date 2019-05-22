@@ -17,7 +17,7 @@ class CreateApiCallsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('api_endpoint_id');
             $table->boolean('finished')->default(false);
-            $table->string('response')->nullable();
+            $table->json('response')->nullable();
             $table->timestamps();
         });
     }

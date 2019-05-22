@@ -1,17 +1,6 @@
 <template>
-    <div>
-        <card style="margin:0 auto;">
-            <div slot="header">Invite User</div>
-
-
-            <label>Name
-                <input type="text" v-model="invite.name" class="form-control">
-            </label>
-            <label>Email
-                <input type="email" v-model="invite.email" class="form-control">
-            </label>
-            <button class="btn btn-primary" @click="sendInvite()">Send Invite</button>
-        </card>
+    <div class="text-center ">
+        <h1>home page?</h1>
 
     </div>
 </template>
@@ -28,19 +17,8 @@
                     auth: 'user',
                     nav_position: 0,
                 },
-                invite:{}
             };
         },
-        methods:{
-            sendInvite(){
-                axios.post('invite-user', this.invite).then(res =>{
-                    this.$router.push('/users');
-
-                }).catch(err =>{
-                    alert(err.response.data.message);
-                });
-            }
-        }
 
 
 
