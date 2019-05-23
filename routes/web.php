@@ -13,10 +13,17 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Jobs\InviteNewUsers;
+use App\Notifications\TestNotify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
+Route::get('test',function(){
+    $user = \App\User::first();
+
+    $user->notify(new TestNotify());
+    dd($user);
+});
 //Auth::routes();
 Route::post('login', 'Auth\LoginController@login');
 //Route::get('login', 'Auth\LoginController@login')->name('login');

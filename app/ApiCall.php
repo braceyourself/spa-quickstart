@@ -9,12 +9,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string method
  * @property string path
  * @property ApiEndpoint api_endpoint
+ * @property string response
+ * @property string status
  */
 class ApiCall extends Model
 {
     protected $fillable = [
         'method',
-        'path'
+        'path',
+        'status'
     ];
 
 
@@ -55,6 +58,7 @@ class ApiCall extends Model
 
         return array_merge($opts, $options);
     }
+
 
     /**********************************************
      * Attributes

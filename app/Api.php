@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -73,6 +74,12 @@ class Api extends Model
         return $this->call($endpoint);
     }
 
+    /**
+     * @param $path
+     * @param string $method
+     * @param null $storeInTable
+     * @return false|ApiEndpoint
+     */
     public function addEndpoint($path, $method = 'GET', $storeInTable = null)
     {
         return $this->endpoints()->save(new ApiEndpoint([

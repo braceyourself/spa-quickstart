@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Cornerstone Payments',
         ]);
 
+        /** @var \App\Api $api */
         $api = $vendor->apis()->save(new Api([
             'client_id' => 'test_3kdyN4LepSQxKYFx2uYa',
             'client_secret' => 'test_PR5OMgJ498wNRGrv4tLgwFHub',
@@ -40,7 +41,10 @@ class DatabaseSeeder extends Seeder
             'auth_type_id' => ApiAuthType::where('type', 'basic')->first()->id,
         ]));
 
-        $api->addEndpoint('/transactions');
+        $api->addEndpoint('transactions?show_test=true')->addSchedule('everyMinute');
+        $api->addEndpoint('transactions')->addSchedule('everyMinute');
+        $api->addEndpoint('transactions', 'POST')->addSchedule('everyMinute');
+
     }
 
     private function truncateTables()
@@ -51,6 +55,7 @@ class DatabaseSeeder extends Seeder
             'api_calls',
             'api_endpoints',
             'api_auth_types',
+            'endpoint_call_schedules',
             'vendors',
         ];
         foreach ($tables as $table) {

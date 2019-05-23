@@ -17,14 +17,6 @@ class ApiCallObserver
      */
     public function created(ApiCall $apiCall)
     {
-        $client = new Client($apiCall->requestOptions());
-        $request = new Request($apiCall->method, $apiCall->getUri());
-        $promise = $client->sendAsync($request)->then(function($response)use($apiCall){
-            $apiCall->response = $response->getBody()->getContents();
-            $apiCall->finished = true;
-            $apiCall->save();
-        });
-        $promise->wait();
 
     }
 
@@ -37,7 +29,7 @@ class ApiCallObserver
     public function updated(ApiCall $apiCall)
     {
         if($apiCall->finished){
-            Log::info('finished api call', dump(json_decode($apiCall->response)));
+
         }
 
     }

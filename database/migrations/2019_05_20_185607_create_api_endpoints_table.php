@@ -19,8 +19,10 @@ class CreateApiEndpointsTable extends Migration
             $table->string('path');
             $table->enum('method',['GET','POST']);
             $table->string('store_in_table')->nullable();
+            $table->boolean('enabled')->default(true);
+            $table->integer('failed_attempts')->default(0);
 
-            $table->unique(['api_id','path']);
+            $table->unique(['api_id','path','method']);
 
             $table->timestamps();
         });
