@@ -6,21 +6,22 @@
 	
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>{{ config('app.name', 'Laravel') }}</title>
-	
-	
+
+
 	<script type="text/javascript">
 		window.__INITIAL_STATE__ = JSON.parse("{!!addslashes(json_encode($fields))!!}");
 	</script>
-	<script src="{{ asset('js/app.js') }}" defer></script>
+{{--	<script src="{{ asset('js/app.js') }}" defer></script>--}}
 	
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-	
+
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 <div id="app">
 	<App />
 </div>
+<script src="{{mix('js/app.js')}}"></script>
 </body>
 </html>

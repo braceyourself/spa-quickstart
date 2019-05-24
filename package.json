@@ -23,7 +23,8 @@
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17",
-        "vue-template-compiler": "^2.6.10"
+        "vue-template-compiler": "^2.6.10",
+        "vue-js-modal": "latest"
     },
     "dependencies": {
         "toastr": "^2.1.4",

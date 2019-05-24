@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\EndpointCallSchedule;
+use App\Jobs\CallApiEndpoint;
 use App\Jobs\PullCornerstoneTransactions;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
@@ -22,15 +24,26 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $tasks_run = 0;
 
-        $schedule->job(new PullCornerstoneTransactions)->everyMinute();
+
+        Log::info('Running Scheduled Tasks');
+        foreach (EndpointCallSchedule::all() as $task) {
+            if($task->endpoint !== null && $task->endpoint->enabled)
+                $tasks_run++;
+                $schedule->job(
+
+                    new CallApiEndpoint($task->endpoint)
+
+                )->cron($task->cron);
+        }
+        Log::info("Tasks Run: $tasks_run");
+
     }
 
     /**
@@ -40,7 +53,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

@@ -15,7 +15,7 @@ class CreateApiAuthTypesTable extends Migration
     {
         Schema::create('api_auth_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('type');
+            $table->string('type')->unique();
             $table->timestamps();
         });
     }
