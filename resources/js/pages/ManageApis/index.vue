@@ -23,7 +23,7 @@
             }
         },
         created(){
-            l.log(apis.all());
+            //
         }
     }
 </script>

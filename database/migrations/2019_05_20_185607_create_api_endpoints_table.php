@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApiCallsTable extends Migration
+class CreateApiEndpointsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateApiCallsTable extends Migration
      */
     public function up()
     {
-        Schema::create('api_calls', function (Blueprint $table) {
+        Schema::create('api_endpoints', function (Blueprint $table) {
             $table->bigIncrements('id');
-			$table->integer('api_id');
-			$table->enum('status', ['PENDING','COMPLETE','FAILED'])->default('PENDING');
-			$table->json('response')->nullable();
+            $table->integer('api_id');
+            $table->string('path');
+            $table->string('store_in_table')->nullable();
+
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateApiCallsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('api_calls');
+        Schema::dropIfExists('api_endpoints');
     }
 }

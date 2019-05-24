@@ -8,4 +8,8 @@ export default class Logger {
         console.log(`[${this.name}]`, ...args)
     }
 
+    error(...args) {
+        console.error(`[${this.name}]`, ...args)
+    }
+
 }

@@ -32,14 +32,7 @@
             };
         },
         methods:{
-            sendInvite(){
-                axios.post('invite-user', this.invite).then(res =>{
-                    this.$router.push('/users');
-
-                }).catch(err =>{
-                    alert(err.response.data.message);
-                });
-            }
+            //
         }
 
 

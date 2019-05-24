@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApisTable extends Migration
+class CreateVendorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateApisTable extends Migration
      */
     public function up()
     {
-        Schema::create('apis', function (Blueprint $table) {
+        Schema::create('vendors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-			$table->string('base_url');
-			$table->string('auth_type_id');
-			$table->string('callback_url')->nullable();
-            $table->string('client_id')->nullable();
-            $table->string('client_secret')->nullable();
+            $table->string('website')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateApisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('apis');
+        Schema::dropIfExists('vendors');
     }
 }
