@@ -36,7 +36,8 @@ let store = new Vuex.Store({
                 let data = res.data;
                 commit('resource', {resource, data});
             }).catch(err => {
-                alert(err.response.data.message);
+                l.error(`couldn't load resource ${resource}`);
+                l.error(err.response.data.message);
             })
 
         },

@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\ApiCall;
-use App\Observers\ObserverApiCalls;
+use App\Console\Commands\MakeModel;
+use App\FRC\Vendor;
+use App\Observers\ApiCallObserver;
+use App\Observers\VendorObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +18,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->extend('command.model.make', function($command, $app){
+            return new MakeModel($app['files']);
+        });
     }
 
     /**
@@ -25,6 +30,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-		ApiCall::observe(ObserverApiCalls::class);
+        ApiCall::observe(ApiCallObserver::class);
     }
 }
