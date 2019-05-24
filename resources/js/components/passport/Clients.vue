@@ -279,7 +279,7 @@
              * Show the form for creating new clients.
              */
             showCreateClientForm() {
-                $('#modal-create-client').modal('show');
+                $('#modal-create-client').modal('ShowTransaction.vue');
             },
 
             /**
@@ -300,7 +300,7 @@
                 this.editForm.name = client.name;
                 this.editForm.redirect = client.redirect;
 
-                $('#modal-edit-client').modal('show');
+                $('#modal-edit-client').modal('ShowTransaction.vue');
             },
 
             /**

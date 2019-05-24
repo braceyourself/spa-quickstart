@@ -5,6 +5,7 @@ namespace App;
 use App\Jobs\CallApiEndpoint;
 use App\Rules\IsValidFrequency;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Validation\Validator;
 
 /**
@@ -49,6 +50,13 @@ class ApiEndpoint extends Model
     public function call(array $params = [], array $headers = []){
         $job = new CallApiEndpoint($this, $params, $headers);
         dispatch($job);
+        return $job->call;
+    }
+
+
+    public function callAndWait(array $params = [], array $headers = []){
+        $job = new CallApiEndpoint($this, $params, $headers);
+        Bus::dispatchNow($job);
         return $job->call;
     }
 

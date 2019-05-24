@@ -33,6 +33,9 @@ $material-icons-font-path: '~material-icons/iconfont/';
   //background-color: #8fcbff;
   //cursor: default;
 }
+input, select{
+    @extend .form-control;
+}
 
 
 button{

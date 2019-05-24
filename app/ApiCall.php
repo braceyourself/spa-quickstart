@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string method
  * @property string path
  * @property ApiEndpoint api_endpoint
- * @property string response
+ * @property array response
+ * @property array request
  * @property string status
  */
 class ApiCall extends Model
@@ -17,7 +18,13 @@ class ApiCall extends Model
     protected $fillable = [
         'method',
         'path',
-        'status'
+        'status',
+        'request'
+    ];
+
+    protected $casts = [
+        'response' => 'array',
+        'request' => 'array'
     ];
 
 

@@ -228,7 +228,7 @@
              * Show the form for creating new tokens.
              */
             showCreateTokenForm() {
-                $('#modal-create-token').modal('show');
+                $('#modal-create-token').modal('ShowTransaction.vue');
             },
 
             /**
@@ -284,7 +284,7 @@
 
                 this.accessToken = accessToken;
 
-                $('#modal-access-token').modal('show');
+                $('#modal-access-token').modal('ShowTransaction.vue');
             },
 
             /**

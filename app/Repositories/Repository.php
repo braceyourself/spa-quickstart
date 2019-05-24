@@ -19,7 +19,7 @@ class Repository implements RepositoryInterface
 
     public static function create(array $data)
     {
-        // TODO: Implement create() method.
+
     }
 
     public static function update($id, array $data)
@@ -35,5 +35,9 @@ class Repository implements RepositoryInterface
     public static function show($id)
     {
         // TODO: Implement show() method.
+    }
+
+    protected static function sendRequest($uri, $data){
+
     }
 }

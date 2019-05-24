@@ -3,9 +3,11 @@
 use App\Api;
 use App\ApiAuthType;
 use App\ApiEndpoint;
+use App\User;
 use App\Vendor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,11 +22,15 @@ class DatabaseSeeder extends Seeder
         $this->truncateTables();
 
 
-        \App\User::create([
+        /** @var User $user */
+        $user = User::create([
             'name'=>'Ethan Brace',
             'email'=> 'eab@frc.org',
             'password' => bcrypt(env('MY_PASSWORD'))
         ]);
+
+
+
 
         ApiAuthType::create([
             'type' => 'basic'
@@ -41,9 +47,9 @@ class DatabaseSeeder extends Seeder
             'auth_type_id' => ApiAuthType::where('type', 'basic')->first()->id,
         ]));
 
-        $api->addEndpoint('transactions?show_test=true')->addSchedule('everyMinute');
-        $api->addEndpoint('transactions')->addSchedule('everyMinute');
-        $api->addEndpoint('transactions', 'POST')->addSchedule('everyMinute');
+        $api->newEndpoint('transactions?show_test=true')->addSchedule('everyMinute');
+        $api->newEndpoint('transactions')->addSchedule('everyMinute');
+//        $api->addEndpoint('transactions', 'POST')->addSchedule('everyMinute');
 
     }
 
