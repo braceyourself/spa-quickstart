@@ -1,9 +1,13 @@
 require('./bootstrap');
+require('./modals');
 import Vue from 'vue';
 import router from './router';
 import store from './store';
 import toastr from './toastr';
 import Logger from './Logger';
+import VModal from 'vue-js-modal';
+Vue.use(VModal, {dynamic:true, injectModalsContainer:true, dynamicDefaults:{clickToClose:false}});
+
 
 let l = new Logger('app.js');
 
@@ -14,10 +18,12 @@ window.flash = (message, type = 'info', options) => {
 };
 
 // eslint-disable-next-line
-const files = require.context('./', true, /\.vue$/i);
+const files = require.context('./components', true, /\.vue$/i);
 files.keys().map(key => {
-    let name = key.split('/').pop().split('.')[0];
-    Vue.component(name, files(key).default)
+    let name = _.kebabCase(key.split('/').pop().split('.')[0]);
+    let component = files(key).default;
+    l.log('new component', name, component);
+    Vue.component(name, component)
 });
 
 Vue.mixin({

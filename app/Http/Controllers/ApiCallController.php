@@ -14,6 +14,8 @@ class ApiCallController extends Controller
      */
     public function index()
     {
+        return ApiCall::all();
+
         //
     }
 

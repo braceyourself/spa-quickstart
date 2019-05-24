@@ -13,6 +13,7 @@
 </template>
 
 <script>
+    import Navbar from './partials/Navbar'
     import Logger from '../../js/Logger';
     import {mapState} from 'vuex';
 
@@ -20,6 +21,7 @@
 
     export default {
         name: "App",
+        components:{Navbar},
         created() {
             l.log(this.loading);
 
