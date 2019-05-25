@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApiTokensTable extends Migration
+class CreateEndpointCallSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateApiTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('api_tokens', function (Blueprint $table) {
+        Schema::create('endpoint_call_schedules', function (Blueprint $table) {
             $table->bigIncrements('id');
-			$table->integer('api_id');
-			$table->string('token');
-			$table->timestamp('expires_at');
+            $table->integer('endpoint_id');
+            $table->string('cron');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateApiTokensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('api_tokens');
+        Schema::dropIfExists('endpoint_call_schedules');
     }
 }

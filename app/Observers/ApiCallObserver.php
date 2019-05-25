@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\ApiCall;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Log;
 
 class ApiCallObserver
 {
@@ -15,11 +17,7 @@ class ApiCallObserver
      */
     public function created(ApiCall $apiCall)
     {
-        $client = new Client($apiCall->requestOptions());
-        $response = $client->request($apiCall->method, $apiCall->getUri());
 
-        $apiCall->response = $response->getBody()->getContents();
-        $apiCall->save();
     }
 
     /**
@@ -30,7 +28,10 @@ class ApiCallObserver
      */
     public function updated(ApiCall $apiCall)
     {
-        //
+        if($apiCall->finished){
+
+        }
+
     }
 
     /**

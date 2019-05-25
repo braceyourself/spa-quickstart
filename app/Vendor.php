@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property Collection apis
+ */
 class Vendor extends Model
 {
     protected $fillable = [

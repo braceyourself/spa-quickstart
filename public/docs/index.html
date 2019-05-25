@@ -47,6 +47,198 @@
 <h1>Info</h1>
 <p>Welcome to the generated API reference.</p>
 <!-- END_INFO -->
+<h1>general</h1>
+<!-- START_f42e87598c8353944d88aa8de3b294a1 -->
+<h2>api/vendors</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "https://api.frc.org/api/vendors" </code></pre>
+<pre><code class="language-javascript">const url = new URL("https://api.frc.org/api/vendors");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">[
+    {
+        "id": 1,
+        "name": "Cornerstone Payments",
+        "website": null,
+        "created_at": "2019-05-21 20:49:53",
+        "updated_at": "2019-05-21 20:49:53",
+        "apis": [
+            {
+                "id": 1,
+                "vendor_id": 1,
+                "client_id": "test_3kdyN4LepSQxKYFx2uYa",
+                "client_secret": "test_PR5OMgJ498wNRGrv4tLgwFHub",
+                "base_url": "https:\/\/api.cornerstone.cc\/v1",
+                "auth_type_id": 1,
+                "created_at": "2019-05-21 20:49:53",
+                "updated_at": "2019-05-21 20:49:53"
+            }
+        ]
+    }
+]</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/vendors</code></p>
+<!-- END_f42e87598c8353944d88aa8de3b294a1 -->
+<!-- START_bd154e283685d3f5bf363f9e85ab040e -->
+<h2>api/vendors/create</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "https://api.frc.org/api/vendors/create" </code></pre>
+<pre><code class="language-javascript">const url = new URL("https://api.frc.org/api/vendors/create");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">null</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/vendors/create</code></p>
+<!-- END_bd154e283685d3f5bf363f9e85ab040e -->
+<!-- START_a43dce37a6ffdfa41a36e07bdf46e8ba -->
+<h2>api/vendors/{vendor}/api-calls</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "https://api.frc.org/api/vendors/1/api-calls" </code></pre>
+<pre><code class="language-javascript">const url = new URL("https://api.frc.org/api/vendors/1/api-calls");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">[
+    {}
+]</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/vendors/{vendor}/api-calls</code></p>
+<!-- END_a43dce37a6ffdfa41a36e07bdf46e8ba -->
+<!-- START_12d1273fe28bd4251c83116271280eef -->
+<h2>api/vendors/{vendor}/call-api/{api}</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "https://api.frc.org/api/vendors/1/call-api/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("https://api.frc.org/api/vendors/1/call-api/1");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">[
+    {}
+]</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/vendors/{vendor}/call-api/{api}</code></p>
+<!-- END_12d1273fe28bd4251c83116271280eef -->
+<!-- START_c19b75ecacca0bf954a83fe91372dd35 -->
+<h2>Display a listing of the resource.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "https://api.frc.org/api/api-calls" </code></pre>
+<pre><code class="language-javascript">const url = new URL("https://api.frc.org/api/api-calls");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">[
+    {
+        "id": 1,
+        "api_endpoint_id": "1",
+        "finished": "0",
+        "response": "{\n\t\"cornerstone\": \"Y'ello\",\n\t\"version\": \"1.6\",\n\t\"build\": \"8816\",\n\t\"documentation\": \"https:\/\/github.com\/cpscc\/wiki\/blob\/master\/official-cornerstone-api.md\"\n}\n",
+        "created_at": "2019-05-21 20:49:55",
+        "updated_at": "2019-05-21 20:49:55"
+    }
+]</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/api-calls</code></p>
+<!-- END_c19b75ecacca0bf954a83fe91372dd35 -->
+<!-- START_875fc3274b3f15d40fdf5a3b6b3eda23 -->
+<h2>test_api_call</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "https://api.frc.org/test_api_call" </code></pre>
+<pre><code class="language-javascript">const url = new URL("https://api.frc.org/test_api_call");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (500):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "Server Error"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET test_api_call</code></p>
+<!-- END_875fc3274b3f15d40fdf5a3b6b3eda23 -->
       </div>
       <div class="dark-box">
                         <div class="lang-selector">

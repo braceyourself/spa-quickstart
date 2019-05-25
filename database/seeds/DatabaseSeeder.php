@@ -3,13 +3,13 @@
 use App\Api;
 use App\ApiAuthType;
 use App\ApiEndpoint;
-use App\User;
 use App\Vendor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
+
     /**
      * Seed the application's database.
      *
@@ -17,23 +17,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $tables = [
-            'apis',
-			'users',
-            'api_calls',
-            'api_auth_types',
-            'vendors',
-        ];
-        foreach ($tables as $table) {
-            DB::table($table)->truncate();
-        }
+        $this->truncateTables();
 
-		User::create([
-			'name' => 'Ethan Brace',
-			'email' => 'ethanabrace@gmail.com',
-			'password' => bcrypt(env('MY_PASSWORD'))
-		]);
 
+        \App\User::create([
+            'name'=>'Ethan Brace',
+            'email'=> 'eab@frc.org',
+            'password' => bcrypt(env('MY_PASSWORD'))
+        ]);
 
         ApiAuthType::create([
             'type' => 'basic'
@@ -42,6 +33,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Cornerstone Payments',
         ]);
 
+        /** @var \App\Api $api */
         $api = $vendor->apis()->save(new Api([
             'client_id' => 'test_3kdyN4LepSQxKYFx2uYa',
             'client_secret' => 'test_PR5OMgJ498wNRGrv4tLgwFHub',
@@ -49,6 +41,25 @@ class DatabaseSeeder extends Seeder
             'auth_type_id' => ApiAuthType::where('type', 'basic')->first()->id,
         ]));
 
-        $api->addEndpoint('/transactions');
+        $api->addEndpoint('transactions?show_test=true')->addSchedule('everyMinute');
+        $api->addEndpoint('transactions')->addSchedule('everyMinute');
+        $api->addEndpoint('transactions', 'POST')->addSchedule('everyMinute');
+
+    }
+
+    private function truncateTables()
+    {
+        $tables = [
+            'apis',
+            'users',
+            'api_calls',
+            'api_endpoints',
+            'api_auth_types',
+            'endpoint_call_schedules',
+            'vendors',
+        ];
+        foreach ($tables as $table) {
+            DB::table($table)->truncate();
+        }
     }
 }
