@@ -29,10 +29,6 @@ class CallApiEndpoint implements ShouldQueue
     /**
      * @var array
      */
-    private $params;
-    /**
-     * @var array
-     */
     private $headers;
     /**
      * @var Client
@@ -54,9 +50,11 @@ class CallApiEndpoint implements ShouldQueue
     public function __construct(ApiEndpoint $endpoint, array $params = [], array $headers = [])
     {
         $this->endpoint = $endpoint;
-        $this->params = $params;
         $this->headers = $headers;
-        $this->call = $endpoint->api_calls()->save(new ApiCall(['status' => 'PENDING']));
+        $this->call = $endpoint->api_calls()->save(new ApiCall([
+            'status' => 'PENDING',
+            'request' => $params
+        ]));
 //        $this->client = new Client([
 //            'base_uri' => $this->endpoint->api->base_url,
 //        ]);
@@ -71,39 +69,44 @@ class CallApiEndpoint implements ShouldQueue
     public function handle()
     {
 
-        $client = new Client($this->call->requestOptions());
-        $request = new Request($this->call->method, $this->call->getUri(), $this->headers);
+        $client = new Client($this->call->requestOptions([
+            'form_params' => $this->call->request
+        ]));
+
+//        $request = new Request($this->call->method, $this->call->getUri(),$this->headers);
+//        dd($request);
 
 
-        try{
-            $response = $client->send($request);
+        try {
+//            dd($client->getConfig());
+            $response = $client->request($this->call->method, $this->call->getUri());
 
-            $this->call->response = $response->getBody()->getContents();
+            $this->call->response = json_decode($response->getBody()->getContents());
             $this->call->status = $response->getStatusCode();
             $this->call->save();
-        }catch (RequestException $e){
+        } catch (RequestException $e) {
+//            $this->fail($e);
 
-            $this->job->fail($e);
+//            $this->job->fail($e);
 
+
+            $this->failed($e);
         }
-
-
 
 
     }
 
 
-
-    public function failed(ClientException $e)
+    public function failed(\Exception $e)
     {
-        $users = User::where('email','like','ethan%')->get();
+//        $users = User::where('email','like','ethan%')->get();
 
 
-        $this->call->response = $e->getMessage();
+        $this->call->response = json_decode($e->getResponse()->getBody()->getContents());
         $this->call->status = $e->getCode();
         $this->call->save();
 
-        Notification::send($users, new ApiEndpointFail);
+//        Notification::send($users, new ApiEndpointFail);
 
     }
 }

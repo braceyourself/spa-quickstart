@@ -6,6 +6,7 @@ import store from './store';
 import toastr from './toastr';
 import Logger from './Logger';
 import VModal from 'vue-js-modal';
+import helpers from './helpers';
 Vue.use(VModal, {dynamic:true, injectModalsContainer:true, dynamicDefaults:{clickToClose:false}});
 
 
@@ -31,10 +32,11 @@ Vue.mixin({
         get(key) {
             return this.$store.getters.get(key);
         },
-
     },
 });
 
+
+Vue.mixin(helpers);
 const app = new Vue({
     el: '#app',
     router, store,

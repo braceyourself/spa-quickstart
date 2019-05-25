@@ -1,9 +1,6 @@
-<?php use Illuminate\Http\Request;
-
-Route::get('transactions',function(){
-    return response([
-        'transactions' => ['all of them','...']
-    ]);
-});
+<?php use App\Api;
+use App\Repositories\CornerstoneTransactionRepository;
+use App\Vendor;
+use Illuminate\Http\Request;
 
 //Route::

@@ -58,8 +58,8 @@ class Api extends Model
     public function call($path = '/', $method = 'get')
     {
         $endpoint = $this->endpoints->where('path', $path)->first();
-        if(!$endpoint){
-            $endpoint = $this->addEndpoint($path);
+        if (!$endpoint) {
+            $endpoint = $this->newEndpoint($path);
         }
 
         return $endpoint->api_calls()->save(new ApiCall([
@@ -80,13 +80,21 @@ class Api extends Model
      * @param null $storeInTable
      * @return false|ApiEndpoint
      */
-    public function addEndpoint($path, $method = 'GET', $storeInTable = null)
+    public function newEndpoint($path, $method = 'GET', $storeInTable = null)
     {
-        return $this->endpoints()->save(new ApiEndpoint([
+        $endpoint = $this->makeEndpoint($path, $method, $storeInTable);
+        $endpoint->save();
+        return $endpoint;
+    }
+
+    public function makeEndpoint($path, $method = 'GET', $storeInTable = null)
+    {
+        return $this->endpoints()->firstOrNew([
             'path' => $path,
             'method' => $method,
             'store_in_table' => $storeInTable
-        ]));
+        ]);
+
     }
 
     public function typeOf($type_name)
