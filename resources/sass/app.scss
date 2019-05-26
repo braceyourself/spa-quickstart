@@ -4,11 +4,9 @@
 @import 'variables';
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 @import "~toastr/toastr";
 
 $material-icons-font-path: '~material-icons/iconfont/';
-@import '~material-icons/css/material-icons';
 
 .navbar-laravel {
   background-color: #fff;
@@ -33,16 +31,22 @@ $material-icons-font-path: '~material-icons/iconfont/';
   //background-color: #8fcbff;
   //cursor: default;
 }
-input, select{
-    @extend .form-control;
+
+input, select {
+  @extend .form-control;
 }
 
 
-button{
-    @extend .btn;
-    border-radius: 0;
+button {
+  @extend .btn;
+  border-radius: 0;
 
-    &.primary{
-        @extend .btn-primary;
-    }
+  &.primary {
+    @extend .btn-primary;
+  }
+}
+
+.is-invalid {
+  margin-top: 0.25rem;
+  color: #dc3545;
 }

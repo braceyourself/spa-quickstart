@@ -12,7 +12,8 @@ Vue.use(Vuex);
 let store = new Vuex.Store({
     state: {
         ...__INITIAL_STATE__,
-        resources: {}
+        resources: {},
+        errors:{}
     },
     mutations: {
         state(state, newState) {
@@ -26,6 +27,13 @@ let store = new Vuex.Store({
         resource(state, {resource, data}) {
             l.log('resource', resource, data);
             Vue.set(state['resources'], resource, data);
+
+        },
+        errors(state, newError) {
+            _.forEach(newError, (value, key) => {
+                l.log('new error', key, value);
+                Vue.set(state['errors'], key, value)
+            })
         }
     },
 
@@ -41,11 +49,17 @@ let store = new Vuex.Store({
             })
 
         },
-        submitLogin({state}, payload) {
-            l.log(payload);
+        submitLogin({state,commit}, payload) {
+            commit('state', {
+                errors:{}
+            });
             axios.post('login', payload).then(res => {
                 window.location.replace('/home');
-            })
+            }).catch(err => {
+                l.error(err.response.data.message);
+                commit('errors',err.response.data.errors);
+                commit('errors', {message: err.response.data.message});
+            });
         },
         logout({commit}) {
             axios.post('/logout').then(res => {

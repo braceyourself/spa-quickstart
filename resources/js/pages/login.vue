@@ -6,16 +6,23 @@
                     <div class="card-header">Login</div>
 
                     <div class="card-body">
+
+                        <strong v-if="errors['message']"
+                                class="text-center is-invalid d-block"
+                                role="alert">
+                            {{ errors['message'] }}
+                        </strong>
+
                         <div>
                             <div class="form-group row">
                                 <label class="px-4">
                                     E-Mail Address
                                     <input id="login-email" type="email" class="form-control"
-                                           :class="errorsInclude('email') ? ' is-invalid' : ''"
+                                           :class="errors['email'] ? ' is-invalid' : ''"
                                            v-model="login.email"
                                            required autofocus>
 
-                                    <span v-if="errorsInclude('email')" class="invalid-feedback" role="alert">
+                                    <span v-if="errors['email']" class="invalid-feedback" role="alert">
                                         <strong>{{ errors['email'][0] }}</strong>
                                     </span>
                                 </label>
@@ -27,9 +34,9 @@
                                     <input id="login-password" type="password"
                                            v-model="login.password"
                                            class="form-control"
-                                           :class="errorsInclude('password') ? ' is-invalid' : ''"
+                                           :class="errors['password'] ? ' is-invalid' : ''"
                                            required>
-                                    <span v-if="errorsInclude('password')" class="invalid-feedback" role="alert">
+                                    <span v-if="errors['password']" class="invalid-feedback" role="alert">
                                         <strong>{{ errors['password'][0] }}</strong>
                                     </span>
                                 </label>
@@ -56,7 +63,10 @@
 
 <script>
     import Logger from '../Logger';
-    import {mapActions} from 'vuex';
+    import {ApiClient} from "../clients";
+
+    let api = new ApiClient('/api');
+    import {mapActions, mapState} from 'vuex';
 
     let l = new Logger('login.vue');
 
@@ -68,15 +78,14 @@
                     auth: 'guest'
                 },
                 login: {},
-                errors: []
             }
+        },
+        computed: {
+            ...mapState(['errors']),
         },
         methods: {
             ...mapActions(['submitLogin']),
 
-            errorsInclude(key) {
-                return false;
-            },
             showForgotPasswordLink() {
                 return false;
             }
