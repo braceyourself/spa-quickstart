@@ -2,7 +2,7 @@
 
 use App\Api;
 use App\ApiAuthType;
-use App\ApiEndpoint;
+use App\ApiResource;
 use App\User;
 use App\Vendor;
 use Illuminate\Database\Seeder;
@@ -24,17 +24,12 @@ class DatabaseSeeder extends Seeder
 
         /** @var User $user */
         $user = User::create([
-            'name'=>'Ethan Brace',
-            'email'=> 'eab@frc.org',
+            'name' => 'Ethan Brace',
+            'email' => 'eab@frc.org',
             'password' => bcrypt(env('MY_PASSWORD'))
         ]);
 
 
-
-
-        ApiAuthType::create([
-            'type' => 'basic'
-        ]);
         $vendor = Vendor::create([
             'name' => 'Cornerstone Payments',
         ]);
@@ -44,10 +39,15 @@ class DatabaseSeeder extends Seeder
             'client_id' => 'test_3kdyN4LepSQxKYFx2uYa',
             'client_secret' => 'test_PR5OMgJ498wNRGrv4tLgwFHub',
             'base_url' => 'https://api.cornerstone.cc/v1',
-            'auth_type_id' => ApiAuthType::where('type', 'basic')->first()->id,
+            'auth_type_id' => ApiAuthType::firstOrCreate([
+                'type' => 'basic'
+            ])->id,
         ]));
 
-//        $api->newEndpoint('transactions?show_test=true')->addSchedule('');
+        $resource = $api->newResource('transactions');
+        dd($resource->get());
+
+
 //        $api->newEndpoint('transactions')->addSchedule('everyMinute');
 //        $api->addEndpoint('transactions', 'POST')->addSchedule('everyMinute');
 
@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
             'apis',
             'users',
             'api_calls',
-            'api_endpoints',
+            'api_resources',
             'api_auth_types',
             'endpoint_call_schedules',
             'vendors',

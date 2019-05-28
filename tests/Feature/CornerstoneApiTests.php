@@ -56,7 +56,7 @@ class CornerstoneApiTests extends TestCase
      */
     public function testGetTransactions()
     {
-        $ep = $this->api->newEndpoint('transactions','GET');
+        $ep = $this->api->newResource('transactions','GET');
         dd($ep->full_path);
         $response = $this->get($ep->full_path);
         dd($response->getContent());

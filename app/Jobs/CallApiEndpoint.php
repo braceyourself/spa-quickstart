@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\ApiCall;
-use App\ApiEndpoint;
+use App\ApiResource;
 use App\Notifications\ApiEndpointFail;
 use App\User;
 use GuzzleHttp\Client;
@@ -23,9 +23,9 @@ class CallApiEndpoint implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     /**
-     * @var ApiEndpoint
+     * @var ApiResource
      */
-    private $endpoint;
+    private $resource;
     /**
      * @var array
      */
@@ -43,21 +43,20 @@ class CallApiEndpoint implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param ApiEndpoint $endpoint
+     * @param ApiResource $resource
+     * @param string $method
      * @param array $params
      * @param array $headers
      */
-    public function __construct(ApiEndpoint $endpoint, array $params = [], array $headers = [])
+    public function __construct(ApiResource $resource, $method = 'get', array $params = [], array $headers = [])
     {
-        $this->endpoint = $endpoint;
+        $this->resource = $resource;
         $this->headers = $headers;
-        $this->call = $endpoint->api_calls()->save(new ApiCall([
+        $this->call = $resource->api_calls()->save(new ApiCall([
             'status' => 'PENDING',
-            'request' => $params
+            'request' => $params,
+            'method' => $method
         ]));
-//        $this->client = new Client([
-//            'base_uri' => $this->endpoint->api->base_url,
-//        ]);
 
     }
 
@@ -73,23 +72,14 @@ class CallApiEndpoint implements ShouldQueue
             'form_params' => $this->call->request
         ]));
 
-//        $request = new Request($this->call->method, $this->call->getUri(),$this->headers);
-//        dd($request);
-
 
         try {
-//            dd($client->getConfig());
             $response = $client->request($this->call->method, $this->call->getUri());
 
             $this->call->response = json_decode($response->getBody()->getContents());
             $this->call->status = $response->getStatusCode();
             $this->call->save();
         } catch (RequestException $e) {
-//            $this->fail($e);
-
-//            $this->job->fail($e);
-
-
             $this->failed($e);
         }
 
@@ -99,14 +89,10 @@ class CallApiEndpoint implements ShouldQueue
 
     public function failed(\Exception $e)
     {
-//        $users = User::where('email','like','ethan%')->get();
-
 
         $this->call->response = json_decode($e->getResponse()->getBody()->getContents());
         $this->call->status = $e->getCode();
         $this->call->save();
-
-//        Notification::send($users, new ApiEndpointFail);
 
     }
 }
