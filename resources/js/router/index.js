@@ -28,19 +28,8 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.authorized) next();
     else {
-        if(to.meta.auth === 'user'){
-            store.commit('state', {
-                afterLogin: to.path,
-                errors:[
-                    {
-                        message:'Please login to view that page.'
-                    }
-                ]
-            });
-
-            next('/login')
-
-        } else if (to.meta.auth) {
+        // next('/');
+        if (to.meta.auth) {
             flash(`That page is only for ${to.meta.auth}s.`);
         }else
             flash(`That page is off limits for you!.`);
