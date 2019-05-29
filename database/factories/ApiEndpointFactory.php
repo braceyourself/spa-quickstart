@@ -2,10 +2,10 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\ApiEndpoint;
+use App\ApiResource;
 use Faker\Generator as Faker;
 
-$factory->define(ApiEndpoint::class, function (Faker $faker) {
+$factory->define(ApiResource::class, function (Faker $faker) {
     return [
         //
     ];

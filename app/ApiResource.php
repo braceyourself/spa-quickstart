@@ -4,19 +4,20 @@ namespace App;
 
 use App\Jobs\CallApiEndpoint;
 use App\Rules\IsValidFrequency;
+use Illuminate\Console\Scheduling\ManagesFrequencies;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Validation\Validator;
+use Zttp\Zttp;
 
 /**
- * @property string path
- * @property Collection $api_calls
+ * @property string resource
  * @property Api api
  */
-class ApiEndpoint extends Model
+class ApiResource extends Model
 {
+    protected $fillable = ['resource','store_in_table','method'];
 
-    protected $fillable = ['path','store_in_table','method'];
 
 
 
@@ -41,24 +42,39 @@ class ApiEndpoint extends Model
      * Methods
      *********************************************/
 
-
     /**
      * @param array $params
      * @param array $headers
      * @return ApiCall
      */
-    public function call(array $params = [], array $headers = []){
-        $job = new CallApiEndpoint($this, $params, $headers);
+    public function call($method = 'get', array $params = [], array $headers = []){
+        $job = new CallApiEndpoint($this, $method, $params, $headers);
         dispatch($job);
         return $job->call;
     }
 
 
-    public function callAndWait(array $params = [], array $headers = []){
-        $job = new CallApiEndpoint($this, $params, $headers);
+    /**
+     * @param string $method
+     * @param array $params
+     * @param array $headers
+     * @return ApiCall|false|Model
+     */
+    public function callAndWait($method = 'get', array $params = [], array $headers = []){
+        $job = new CallApiEndpoint($this, $method, $params, $headers);
         Bus::dispatchNow($job);
         return $job->call;
     }
+
+
+
+
+    public function get($id = null){
+        return $this->callAndWait()->response;
+
+    }
+
+
 
 
     /**
@@ -75,7 +91,7 @@ class ApiEndpoint extends Model
      * Attributes
      **********************************************/
     public function getFullPathAttribute(){
-        return $this->api->base_url . '/' . $this->path;
+        return $this->api->base_url . '/' . $this->resource;
     }
 
 }

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Api;
 use App\ApiCall;
-use App\ApiEndpoint;
+use App\ApiResource;
 use App\Jobs\CallApiEndpoint;
 use App\Vendor;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -34,7 +34,7 @@ class ApiEndpointTests extends TestCase
 
         $vendors->each(function (Vendor $vendor) {
             $vendor->apis->each(function (Api $api) {
-                $api->endpoints->each(function (ApiEndpoint $e) {
+                $api->endpoints->each(function (ApiResource $e) {
                     /** @var CallApiEndpoint $job */
                     $api_call = $e->call();
 
@@ -59,7 +59,7 @@ class ApiEndpointTests extends TestCase
         $vendors = Vendor::all();
         $vendors->each(function (Vendor $vendor) {
             $vendor->apis->each(function (Api $api) {
-                $api->endpoints->each(function (ApiEndpoint $e) {
+                $api->endpoints->each(function (ApiResource $e) {
                     $e->call();
                 });
                 Queue::assertPushed(CallApiEndpoint::class, $api->endpoints->count());
@@ -75,7 +75,7 @@ class ApiEndpointTests extends TestCase
         $vendors = Vendor::all();
         $vendors->each(function (Vendor $vendor) {
             $vendor->apis->each(function (Api $api) {
-                $api->endpoints->each(function (ApiEndpoint $e) {
+                $api->endpoints->each(function (ApiResource $e) {
                     $e->call();
                 });
                 Bus::assertDispatched(CallApiEndpoint::class, $api->endpoints->count());

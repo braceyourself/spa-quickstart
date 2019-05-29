@@ -35,7 +35,7 @@ class EndpointCallSchedule extends Model
 
     public function endpoint()
     {
-        return $this->belongsTo(ApiEndpoint::class, 'endpoint_id');
+        return $this->belongsTo(ApiResource::class, 'endpoint_id');
     }
 
 }

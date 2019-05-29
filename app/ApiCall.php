@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Api api
  * @property string method
  * @property string path
- * @property ApiEndpoint api_endpoint
+ * @property ApiResource api_endpoint
  * @property array response
  * @property array request
  * @property string status
@@ -38,9 +38,9 @@ class ApiCall extends Model
     /**********************************************
      * Relations
      **********************************************/
-    public function api_endpoint()
+    public function api_resource()
     {
-        return $this->belongsTo(ApiEndpoint::class);
+        return $this->belongsTo(ApiResource::class);
     }
 
     /**********************************************

@@ -42,9 +42,9 @@ class Api extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-    public function endpoints()
+    public function resources()
     {
-        return $this->hasMany(ApiEndpoint::class);
+        return $this->hasMany(ApiResource::class);
     }
 
     /**********************************************
@@ -59,7 +59,7 @@ class Api extends Model
     {
         $endpoint = $this->endpoints->where('path', $path)->first();
         if (!$endpoint) {
-            $endpoint = $this->newEndpoint($path);
+            $endpoint = $this->newResource($path);
         }
 
         return $endpoint->api_calls()->save(new ApiCall([
@@ -70,28 +70,27 @@ class Api extends Model
 
     public function get($path)
     {
-        $endpoint = ApiEndpoint::where('path', $path)->first();
+        $endpoint = ApiResource::where('path', $path)->first();
         return $this->call($endpoint);
     }
 
     /**
-     * @param $path
+     * @param $resource
      * @param string $method
      * @param null $storeInTable
-     * @return false|ApiEndpoint
+     * @return false|ApiResource
      */
-    public function newEndpoint($path, $method = 'GET', $storeInTable = null)
+    public function newResource($resource, $storeInTable = null)
     {
-        $endpoint = $this->makeEndpoint($path, $method, $storeInTable);
-        $endpoint->save();
-        return $endpoint;
+        $resource = $this->makeResource($resource, $storeInTable);
+        $resource->save();
+        return $resource;
     }
 
-    public function makeEndpoint($path, $method = 'GET', $storeInTable = null)
+    public function makeResource($resource, $storeInTable = null)
     {
-        return $this->endpoints()->firstOrNew([
-            'path' => $path,
-            'method' => $method,
+        return $this->resources()->firstOrNew([
+            'resource' => $resource,
             'store_in_table' => $storeInTable
         ]);
 
